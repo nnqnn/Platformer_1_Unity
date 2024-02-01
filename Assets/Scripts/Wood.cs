@@ -8,6 +8,7 @@ public class Wood : MonoBehaviour
     {
         if(collision.gameObject == HeroScript.Instance.gameObject)
         {
+            HeroScript.Instance.iswalljump = true;
             HeroScript.Instance.GetDamage();
             HeroScript.Instance.Jump();
         }

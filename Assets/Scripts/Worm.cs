@@ -11,6 +11,7 @@ public class Worm : Entity
     {
         if(collision.gameObject == HeroScript.Instance.gameObject)
         {
+            HeroScript.Instance.iswalljump = true;
             Instantiate(object1, transform.position, Quaternion.identity);
             HeroScript.Instance.GetDamage();
             lives--;

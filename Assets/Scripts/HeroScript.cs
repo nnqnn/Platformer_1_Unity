@@ -10,7 +10,7 @@ public class HeroScript : MonoBehaviour
     [SerializeField] public static int lives = 5;
     [SerializeField] private float jumpForce = 10f;
     private bool isGrounded = false;
-    private bool iswalljump = false;
+    public bool iswalljump = false;
     public static int coinsamount = 0;
 
     public GameObject h1;
@@ -63,12 +63,19 @@ public class HeroScript : MonoBehaviour
     public void Jump()
     {
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        iswalljump = false;
     }
 
     private void CheckGround()
     {
         Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.8f);
         isGrounded = collider.Length > 1;
+        //Debug.Log(collider[0].gameObject.tag);
+        if (collider[0].gameObject.tag == "wall"){
+            iswalljump = true;
+        } else {
+            iswalljump = false;
+        }
 
         if (!isGrounded) State = States.animJump;
 
@@ -120,6 +127,7 @@ public class HeroScript : MonoBehaviour
             Run();
         if (!iswalljump && isGrounded && Input.GetButtonDown("Jump"))
         {
+            iswalljump = true;
             Jump();
         }
     }
@@ -131,26 +139,12 @@ public class HeroScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "wall")
-        {
-            iswalljump = true;
-        }
-
         if (collision.gameObject.tag == "tile")
         {
             isGrounded = true;
         }
     }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "wall")
-        {
-            iswalljump = false;
-        }
-    }
 }
-
 public enum States
 {
     animHeroPlatformer,
