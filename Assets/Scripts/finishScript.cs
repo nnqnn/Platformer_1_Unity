@@ -8,9 +8,17 @@ public class finishScript : MonoBehaviour
     public GameObject panel;
     public Text txt;
     public Text txt2;
+    private AudioSource finishSound;
+    public static finishScript Instance { get; set; }
 
+    private void Start()
+    {
+        finishSound = GetComponent<AudioSource>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        finishSound.Play();
+        GameMusicScript.Instance.isMusicPlay = false;
         panel.SetActive(true);
         Time.timeScale = 0;
         txt.text = HeroScript.coinsamount.ToString();

@@ -6,12 +6,15 @@ using UnityEngine.UI;
 
 public class HeroScript : MonoBehaviour
 {
+    
     [SerializeField] private float speed = 3f;
     [SerializeField] public static int lives = 5;
     [SerializeField] private float jumpForce = 10f;
     private bool isGrounded = false;
     public bool iswalljump = false;
     public static int coinsamount = 0;
+
+    [SerializeField] private AudioSource _ascoin;
 
     public GameObject h1;
     public GameObject h2;
@@ -24,6 +27,7 @@ public class HeroScript : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Animator anim;
+    private AudioSource audioJump;
 
     public GameObject ya;
 
@@ -40,6 +44,7 @@ public class HeroScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        audioJump = GetComponent<AudioSource>();
     }
 
     private States State
@@ -62,6 +67,7 @@ public class HeroScript : MonoBehaviour
  
     public void Jump()
     {
+        audioJump.Play();
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
         iswalljump = false;
     }
@@ -142,6 +148,14 @@ public class HeroScript : MonoBehaviour
         if (collision.gameObject.tag == "tile")
         {
             isGrounded = true;
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "coin")
+        {
+            _ascoin.Play();
         }
     }
 }
