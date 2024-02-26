@@ -16,7 +16,10 @@ public class Worm : Entity
             HeroScript.Instance.GetDamage();
             lives--;
             Debug.Log("у червяка " + lives);
-            HeroScript.Instance.Jump();
+            if (!HeroScript.Instance.isGrounded)
+            {
+                HeroScript.Instance.Jump();
+            }
         }
 
         if (lives < 1)

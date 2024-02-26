@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,8 +10,8 @@ public class HeroScript : MonoBehaviour
     
     [SerializeField] private float speed = 3f;
     [SerializeField] public static int lives = 5;
-    [SerializeField] private float jumpForce = 10f;
-    private bool isGrounded = false;
+    [SerializeField] private float jumpForce = 8f;
+    public bool isGrounded = false;
     public bool iswalljump = false;
     public static int coinsamount = 0;
 
@@ -29,17 +30,28 @@ public class HeroScript : MonoBehaviour
     private Animator anim;
     private AudioSource audioJump;
 
+    public int levelNumber;
+
     public GameObject ya;
+    [SerializeField] private Transform yatransform;
 
     public static HeroScript Instance { get; set; }
 
     void Start()
     {
-        
+        if(default == PlayerPrefs.GetInt("lvlnmb")) {
+            PlayerPrefs.SetInt("lvlnmb", 1);
+            levelNumber = 1;
+        } else {
+            if(PlayerPrefs.GetInt("lvlnmb") == 2) {
+                //PlayerPrefs.SetInt("lvlnmb", 1);
+                ya.transform.position = new Vector3(56, 1.2f, 0);
+            }
+        }
     }
 
-        private void Awake()
-    {
+    private void Awake()
+    {   
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -75,8 +87,14 @@ public class HeroScript : MonoBehaviour
     private void CheckGround()
     {
         Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.8f);
-        isGrounded = collider.Length > 1;
-        //Debug.Log(collider[0].gameObject.tag);
+        if (collider[0].gameObject.tag != "Enemy")
+        {
+            isGrounded = collider.Length > 1;
+        } else {
+            //isGrounded = false;
+        }
+
+        //Debug.Log(isGrounded);
         if (collider[0].gameObject.tag == "wall"){
             iswalljump = true;
         } else {
@@ -141,6 +159,11 @@ public class HeroScript : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGround();
+    }
+
+    private void OnApplicationQuit() {
+        Debug.Log("onApplicationQuit");
+        PlayerPrefs.SetInt("lvlnmb", 1);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

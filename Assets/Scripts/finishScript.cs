@@ -8,6 +8,7 @@ public class finishScript : MonoBehaviour
     public GameObject panel;
     public Text txt;
     public Text txt2;
+
     private AudioSource finishSound;
     public static finishScript Instance { get; set; }
 
