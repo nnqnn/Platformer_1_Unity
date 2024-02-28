@@ -12,7 +12,7 @@ public class Wood : MonoBehaviour
             HeroScript.Instance.GetDamage();
             if (!HeroScript.Instance.isGrounded)
             {
-                HeroScript.Instance.Jump();
+                HeroScript.Instance.Jump(false);
             }
         }
     }

@@ -9,6 +9,11 @@ public class moneytextscript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        txt.text = HeroScript.coinsamount.ToString();
+        if(HeroScript.coinsamount > 9) {
+            txt.color = Color.green;
+            txt.text = HeroScript.coinsamount.ToString();
+        } else {
+            txt.text = HeroScript.coinsamount.ToString() + "/10";
+        }
     }
 }

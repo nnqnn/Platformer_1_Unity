@@ -29,11 +29,14 @@ public class HeroScript : MonoBehaviour
     private SpriteRenderer sprite;
     private Animator anim;
     private AudioSource audioJump;
+    [SerializeField] private GameObject mcamera;
+
+    float currentSpeed;
+    bool noJumpEnemy = false;
 
     public int levelNumber;
 
     public GameObject ya;
-    [SerializeField] private Transform yatransform;
 
     public static HeroScript Instance { get; set; }
 
@@ -46,6 +49,7 @@ public class HeroScript : MonoBehaviour
             if(PlayerPrefs.GetInt("lvlnmb") == 2) {
                 //PlayerPrefs.SetInt("lvlnmb", 1);
                 ya.transform.position = new Vector3(56, 1.2f, 0);
+                mcamera.transform.position = new Vector3(56, 1.2f, 0);
             }
         }
     }
@@ -77,16 +81,41 @@ public class HeroScript : MonoBehaviour
     }
     
  
-    public void Jump()
+    public void Jump(bool n)
     {
         audioJump.Play();
-        rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
         iswalljump = false;
+        if(n) {
+            if(currentSpeed < 3) {
+                rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            }
+        }
+        else {
+            if(!noJumpEnemy) {
+                rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            } else {
+                rb.AddForce(transform.up * jumpForce / 2, ForceMode2D.Impulse);
+            }
+        }
     }
 
     private void CheckGround()
     {
         Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.8f);
+
+        int j = 0;
+        for (int i = 0; i < collider.Length; i++) {
+            if (collider[i].gameObject.tag == "Enemy") {
+                j++;
+            }
+        }
+
+        if(j == 2) {
+            noJumpEnemy = true;
+        } else {
+            noJumpEnemy = false;
+        }
+
         if (collider[0].gameObject.tag != "Enemy")
         {
             isGrounded = collider.Length > 1;
@@ -152,13 +181,14 @@ public class HeroScript : MonoBehaviour
         if (!iswalljump && isGrounded && Input.GetButtonDown("Jump"))
         {
             iswalljump = true;
-            Jump();
+            Jump(true);
         }
     }
 
     private void FixedUpdate()
     {
         CheckGround();
+        currentSpeed = rb.velocity.magnitude;
     }
 
     private void OnApplicationQuit() {

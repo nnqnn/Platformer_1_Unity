@@ -18,10 +18,11 @@ public class restartScript : MonoBehaviour
         }
         if(bnext) {
             Debug.Log("bnext");
-            HeroScript.Instance = new HeroScript
-            {
-                levelNumber = 2
-            };
+            HeroScript.Instance.levelNumber = 2;
+            // HeroScript.Instance = new HeroScript
+            // {
+            //     levelNumber = 2
+            // };
             PlayerPrefs.SetInt("lvlnmb", 2);
         }
     }
