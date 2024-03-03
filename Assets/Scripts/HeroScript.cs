@@ -31,6 +31,16 @@ public class HeroScript : MonoBehaviour
     private AudioSource audioJump;
     [SerializeField] private GameObject mcamera;
 
+    [SerializeField] private Text DieMoneyTxt;
+    [SerializeField] private Text DieText;
+
+    [SerializeField] private AudioSource DieAudio;
+
+    [SerializeField] private GameObject panel;
+    [SerializeField] private GameObject ButtonRestart;
+    [SerializeField] private GameObject ButtonNext;
+    [SerializeField] private GameObject ButtonRestartForDie;
+
     float currentSpeed;
     bool noJumpEnemy = false;
 
@@ -51,6 +61,14 @@ public class HeroScript : MonoBehaviour
                 ya.transform.position = new Vector3(56, 1.2f, 0);
                 mcamera.transform.position = new Vector3(56, 1.2f, 0);
             }
+        }
+
+        if(PlayerPrefs.GetInt("Hard") == 1) {
+            h5.SetActive(false);
+            h4.SetActive(false);
+            h3.SetActive(false);
+            h2.SetActive(false);
+            lives = 1;
         }
     }
 
@@ -139,6 +157,7 @@ public class HeroScript : MonoBehaviour
     {
         lives -= 1;
         Debug.Log(lives);
+        
         if (lives < 1)
         {
             DieHero();
@@ -166,9 +185,30 @@ public class HeroScript : MonoBehaviour
 
     public void DieHero()
     {
-        lives = 5;
-        coinsamount = 0;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //lives = 5;
+        //coinsamount = 0;
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        DieAudio.Play();
+        GameMusicScript.Instance.isMusicPlay = false;
+        panel.SetActive(true);
+        Time.timeScale = 0;
+        DieMoneyTxt.text = HeroScript.coinsamount.ToString();
+        ButtonNext.SetActive(false);
+        ButtonRestart.SetActive(false);
+        ButtonRestartForDie.SetActive(true);
+        if(Language.Instance.CurrentLanguage == "tr") {
+            DieText.text = "Kaybettin!";
+        } else if (Language.Instance.CurrentLanguage == "ru") {
+            DieText.text = "Ты проиграл!";
+        } else {
+            DieText.text = "You lose!";
+        }
+        // restartButton.SetActive(true);
+        // nextButton.SetActive(false);
+        // GameMusicScript.Instance.isMusicPlay = false;
+        // panel.SetActive(true);
+        // Time.timeScale = 0;
+        // txt.text = coinsamount.ToString();
     }
   
     // Update is called once per frame
@@ -194,6 +234,7 @@ public class HeroScript : MonoBehaviour
     private void OnApplicationQuit() {
         Debug.Log("onApplicationQuit");
         PlayerPrefs.SetInt("lvlnmb", 1);
+        PlayerPrefs.SetInt("Hard", 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

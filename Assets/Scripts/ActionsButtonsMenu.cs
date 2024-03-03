@@ -12,6 +12,7 @@ public class ActionsButtonsMenu : MonoBehaviour
 
     public void ButtonStart(int lvl) {
         PlayerPrefs.SetInt("lvlnmb", lvl);
+        PlayerPrefs.SetInt("Hard", 0);
         SceneManager.LoadScene(1);
     }
 
@@ -19,5 +20,11 @@ public class ActionsButtonsMenu : MonoBehaviour
         btnStart.SetActive(false);
         btnlvls.SetActive(false);
         lvlsbuttons.SetActive(true);
+    }
+
+    public void HardStart() {
+        PlayerPrefs.SetInt("lvlnmb", 1);
+        PlayerPrefs.SetInt("Hard", 1);
+        SceneManager.LoadScene(1);
     }
 }

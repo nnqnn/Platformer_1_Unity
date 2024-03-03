@@ -43,4 +43,10 @@ public class restartScript : MonoBehaviour
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;
     }
+    public void DieHeroRestart() {
+        HeroScript.coinsamount = 0;
+        HeroScript.lives = 5;
+        SceneManager.LoadScene(1);
+        Time.timeScale = 1f;
+    }
 }
