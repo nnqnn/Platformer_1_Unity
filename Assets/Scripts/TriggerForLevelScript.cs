@@ -17,7 +17,7 @@ public class TriggerForLevelScript : MonoBehaviour
         if(collision.gameObject == HeroScript.Instance.gameObject) {
             HeroScript.Instance.levelNumber = 1;
             PlayerPrefs.SetInt("lvlnmb", 1);
-            if(HeroScript.coinsamount < 10) {
+            if(HeroScript.coinsamount < 9) {
                 restartButton.SetActive(true);
                 nextButton.SetActive(false);
             } else {

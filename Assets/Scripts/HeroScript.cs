@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 using UnityEngine.UI;
+using TMPro;
 
 public class HeroScript : MonoBehaviour
 {
-    
+
     [SerializeField] private float speed = 3f;
     [SerializeField] public static int lives = 5;
     [SerializeField] private float jumpForce = 8f;
@@ -31,8 +32,8 @@ public class HeroScript : MonoBehaviour
     private AudioSource audioJump;
     [SerializeField] private GameObject mcamera;
 
-    [SerializeField] private Text DieMoneyTxt;
-    [SerializeField] private Text DieText;
+    [SerializeField] private TMP_Text DieMoneyTxt;
+    [SerializeField] private TMP_Text DieText;
 
     [SerializeField] private AudioSource DieAudio;
 
@@ -191,18 +192,19 @@ public class HeroScript : MonoBehaviour
         DieAudio.Play();
         GameMusicScript.Instance.isMusicPlay = false;
         panel.SetActive(true);
-        Time.timeScale = 0;
         DieMoneyTxt.text = HeroScript.coinsamount.ToString();
         ButtonNext.SetActive(false);
         ButtonRestart.SetActive(false);
         ButtonRestartForDie.SetActive(true);
-        if(Language.Instance.CurrentLanguage == "tr") {
-            DieText.text = "Kaybettin!";
-        } else if (Language.Instance.CurrentLanguage == "ru") {
-            DieText.text = "Ты проиграл!";
-        } else {
-            DieText.text = "You lose!";
-        }
+        Debug.Log(Language.Instance.CurrentLanguage);
+        DieText.text = Language.Instance.CurrentLanguage switch
+        {
+            "tr" => "Kaybettin!",
+            "ru" => "Ты проиграл!",
+            _ => "You lose!",
+        };
+        Debug.Log(DieText.text);
+        Time.timeScale = 0;
         // restartButton.SetActive(true);
         // nextButton.SetActive(false);
         // GameMusicScript.Instance.isMusicPlay = false;

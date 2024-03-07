@@ -2,24 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using YG;
 
 public class Language : MonoBehaviour
 {
-    [DllImport("_Internal")]
-    private static extern string GetLang();
 
     public string CurrentLanguage;
 
-    public static Language Instance;
+    public static Language Instance { get; set; }
+
+    private void Start() {
+        GetLangVoid();
+    }
+
+    public void GetLangVoid() {
+        CurrentLanguage = YandexGame.EnvironmentData.language;
+        Debug.Log("===================YA LANG UNITY===========");
+        Debug.Log(CurrentLanguage);
+    }
 
     private void Awake() {
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            CurrentLanguage = GetLang();
-        } else {
-            Destroy(gameObject);
-        }
+        Instance = this;
+        GetLangVoid();
     }
 }

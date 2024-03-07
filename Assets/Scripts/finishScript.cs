@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class finishScript : MonoBehaviour
 {
     public GameObject panel;
-    public Text txt;
-    public Text txt2;
+    public TMP_Text winorlosetxt;
+    public TMP_Text cointxt;
     public GameObject RestForDie;
 
     private AudioSource finishSound;
@@ -16,13 +17,6 @@ public class finishScript : MonoBehaviour
     private void Start()
     {
         finishSound = GetComponent<AudioSource>();
-        if(Language.Instance.CurrentLanguage == "tr") {
-            txt2.text = "Seviye Geçildi!\nKazandın!";
-        } else if (Language.Instance.CurrentLanguage == "ru") {
-            txt2.text = "Уровень Пройден!\nТы Победил!";
-        } else {
-            txt2.text = "Level Completed!\nYou Win!";
-        }
     }
 
     public void vvv(bool isLose) {
@@ -30,21 +24,26 @@ public class finishScript : MonoBehaviour
         GameMusicScript.Instance.isMusicPlay = false;
         panel.SetActive(true);
         RestForDie.SetActive(false);
-        Time.timeScale = 0;
-        txt.text = HeroScript.coinsamount.ToString();
+        cointxt.text = HeroScript.coinsamount.ToString();
         if (isLose)
         {
-        if(Language.Instance.CurrentLanguage == "tr") {
-            txt2.text = "Kaybettin!";
-        } else if (Language.Instance.CurrentLanguage == "ru") {
-            txt2.text = "Ты проиграл!";
-        } else {
-            txt2.text = "You lose!";
+        winorlosetxt.text = Language.Instance.CurrentLanguage switch
+        {
+            "tr" => "Kaybettin!",
+            "ru" => "Ты проиграл!",
+            _ => "You lose!",
+        };
         }
-        }
+        Time.timeScale = 0;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        winorlosetxt.text = Language.Instance.CurrentLanguage switch
+        {
+            "tr" => "Seviye Geçildi!\nKazandın!",
+            "ru" => "Уровень Пройден!\nТы Победил!",
+            _ => "Level Completed!\nYou Win!",
+        };
         if (HeroScript.coinsamount < 9)
         {
             vvv(true);

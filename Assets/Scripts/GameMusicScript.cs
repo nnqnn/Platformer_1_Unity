@@ -8,6 +8,26 @@ public class GameMusicScript : MonoBehaviour
     private AudioSource musicgame;
     public bool isMusicPlay = true;
 
+    void OnApplicationFocus(bool hasFocus)
+    {
+        Silence(!hasFocus);
+    }
+
+    void OnApplicationPause(bool isPaused)
+    {
+        Silence(isPaused);
+    }
+
+    private void Silence(bool silence)
+    {
+        if(silence && musicgame.isPlaying) {
+            musicgame.Pause();
+        }
+
+        if(!silence && !musicgame.isPlaying) {
+            musicgame.Play();
+        }
+    }
     void Start()
     {
         Instance = this;

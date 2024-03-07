@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class moneytextscript : MonoBehaviour
 {
-    public Text txt;
+    public TMP_Text txt;
     // Update is called once per frame
     void Update()
     {
