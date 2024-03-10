@@ -57,10 +57,11 @@ public class HeroScript : MonoBehaviour
             PlayerPrefs.SetInt("lvlnmb", 1);
             levelNumber = 1;
         } else {
-            if(PlayerPrefs.GetInt("lvlnmb") == 2) {
-                //PlayerPrefs.SetInt("lvlnmb", 1);
-                ya.transform.position = new Vector3(56, 1.2f, 0);
-                mcamera.transform.position = new Vector3(56, 1.2f, 0);
+            switch(PlayerPrefs.GetInt("lvlnmb")) {
+                case 2 or 4:
+                    ya.transform.position = new Vector3(56, 1.2f, 0);
+                    mcamera.transform.position = new Vector3(56, 1.2f, 0);
+                    break;
             }
         }
 
@@ -186,9 +187,6 @@ public class HeroScript : MonoBehaviour
 
     public void DieHero()
     {
-        //lives = 5;
-        //coinsamount = 0;
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         DieAudio.Play();
         GameMusicScript.Instance.isMusicPlay = false;
         panel.SetActive(true);
@@ -205,12 +203,6 @@ public class HeroScript : MonoBehaviour
         };
         Debug.Log(DieText.text);
         Time.timeScale = 0;
-        // restartButton.SetActive(true);
-        // nextButton.SetActive(false);
-        // GameMusicScript.Instance.isMusicPlay = false;
-        // panel.SetActive(true);
-        // Time.timeScale = 0;
-        // txt.text = coinsamount.ToString();
     }
   
     // Update is called once per frame
@@ -235,7 +227,6 @@ public class HeroScript : MonoBehaviour
 
     private void OnApplicationQuit() {
         Debug.Log("onApplicationQuit");
-        PlayerPrefs.SetInt("lvlnmb", 1);
         PlayerPrefs.SetInt("Hard", 0);
     }
 

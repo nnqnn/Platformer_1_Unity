@@ -25,8 +25,8 @@ public class TriggerForLevelScript : MonoBehaviour
                 nextButton.SetActive(true);
             }
         } else {
-            HeroScript.Instance.levelNumber = 2;
-            PlayerPrefs.SetInt("lvlnmb", 2);
+            HeroScript.Instance.levelNumber += 1;
+            PlayerPrefs.SetInt("lvlnmb", PlayerPrefs.GetInt("lvlnmb") + 1);
             restartButton.SetActive(true);
             nextButton.SetActive(false);
         }

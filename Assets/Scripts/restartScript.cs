@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class restartScript : MonoBehaviour
 {
     public static restartScript Instance { get; set; }
-    public bool bnext;
+    private bool bnext;
     public void boolNext(int next)
     {
         if (next == 1) { 
@@ -17,35 +17,37 @@ public class restartScript : MonoBehaviour
         }
         if(bnext) {
             Debug.Log("bnext");
-            HeroScript.Instance.levelNumber = 2;
-            // HeroScript.Instance = new HeroScript
-            // {
-            //     levelNumber = 2
-            // };
-            PlayerPrefs.SetInt("lvlnmb", 2);
+            HeroScript.Instance.levelNumber += 1;
+            PlayerPrefs.SetInt("lvlnmb", PlayerPrefs.GetInt("lvlnmb") + 1);
         }
     }
 
     public void next() {
-        Debug.Log("rest2");
         HeroScript.coinsamount = 0;
         HeroScript.lives = 5;
-        SceneManager.LoadScene(1);
+        if(PlayerPrefs.GetInt("lvlnmb") < 3) {
+            SceneManager.LoadScene(1);
+        } else {
+            SceneManager.LoadScene(2);
+        }
         Time.timeScale = 1f;  
     }
     public void rest()
     {
-        Debug.Log("rest1");
         HeroScript.coinsamount = 0;
         HeroScript.lives = 5;
-        PlayerPrefs.SetInt("lvlnmb", 1);
-        SceneManager.LoadScene(1);
+        if(PlayerPrefs.GetInt("lvlnmb") == finishScript.Instance.finishLevel) {
+            PlayerPrefs.SetInt("lvlnmb", 1);
+            SceneManager.LoadScene(0);
+        } else {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
         Time.timeScale = 1f;
     }
     public void DieHeroRestart() {
         HeroScript.coinsamount = 0;
         HeroScript.lives = 5;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1f;
     }
 }
